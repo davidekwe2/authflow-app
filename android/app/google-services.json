@@ -12,7 +12,20 @@
           "package_name": "com.example.authflow"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "180978468346-ufs6f8044t8gnknhif91iienjrddcgac.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.authflow",
+            "certificate_hash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          }
+        },
+        {
+          "client_id": "180978468346-e6997u8vr2tj39hjdhvapa43uv4jtvmk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDWrUqVpGHxnGS5lQ9i-nIJjXClE3zrrAU"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180978468346-e6997u8vr2tj39hjdhvapa43uv4jtvmk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "180978468346-rlveb2bqjsa22cjseuc29r5tl6scqekf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.authflow"
+              }
+            }
+          ]
         }
       }
     }

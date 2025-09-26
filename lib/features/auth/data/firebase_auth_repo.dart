@@ -2,6 +2,12 @@
 import 'package:authflow/features/auth/domain/repostt/authrepos.dart';
 import 'package:authflow/features/auth/domain/models/app_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:authflow/features/auth/presentation/cubits/auth_cubit.dart';
+
+
+import 'package:google_sign_in/google_sign_in.dart';
+
+import 'firebase_auth_repo.dart';
 
 class FirebaseAuthRepo implements AuthRepost{
   //acccedd firebase
@@ -34,20 +40,6 @@ class FirebaseAuthRepo implements AuthRepost{
         }
   }
 
-  @override
-  Future<void> deleteAccount() async{
-    try{
-      final user= firebaseAuth.currentUser;//to get the current user
-      if(user!=null){
-        await user.delete();
-      }
-      //to log out
-      await firebaseAuth.signOut();
-    }
-        catch(e){
-      throw Exception("Account Deletion failed");
-        }
-  }
 
   @override
   Future<AppUser?> getCurrentUser() async{
@@ -88,9 +80,65 @@ class FirebaseAuthRepo implements AuthRepost{
   }
       catch(e){throw Exception(e);}
   }
+//sign in with google
+
 
   @override
   Future<void> signOut() async{
     firebaseAuth.signOut();
   }
-}
+
+
+
+  @override
+  Future<AppUser?> signInWithGoogle() async {
+    try {
+      final GoogleSignIn signIn = GoogleSignIn.instance;
+      await signIn.initialize();
+
+      GoogleSignInAccount account;
+      if (signIn.supportsAuthenticate()) {
+        account = await signIn.authenticate(scopeHint: const ['email']);
+      } else {
+        final GoogleSignInAccount? maybe =
+        await signIn.attemptLightweightAuthentication();
+        if (maybe == null) return null; // not supported or no previous session
+        account = maybe;
+      }
+
+      final String? idToken = (await account.authentication).idToken;
+      if (idToken == null) throw Exception('No ID token from Google');
+
+      final OAuthCredential credential =
+      GoogleAuthProvider.credential(idToken: idToken);
+
+      final UserCredential userCred =
+      await firebaseAuth.signInWithCredential(credential);
+
+      final user = userCred.user;
+      if (user == null) return null;
+
+      return AppUser(userid: user.uid, email: user.email!);
+    } on GoogleSignInException catch (e) {
+      if (e.code == GoogleSignInExceptionCode.canceled) return null;
+      throw Exception('Google Sign-In failed: ${e.code.name}');
+    } catch (e) {
+      throw Exception('Google Sign-In failed: $e');
+    }
+  }
+
+
+  @override
+  Future<void> deleteAccount() {
+    //delete account
+    try{
+      final user=firebaseAuth.currentUser;
+      if(user!=null){
+        return user.delete();
+      }else{
+        throw Exception("No user logged in");
+      }
+    }catch(e){throw Exception("Failed to delete account");
+  }}
+  }
+

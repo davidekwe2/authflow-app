@@ -5,14 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/repostt/authrepos.dart';
 import 'auth_states.dart';
 
+
 class AuthCubith extends Cubit <AuthState>{
   final AuthRepost authRepost;
   AppUser? _currentUser;
   AuthCubith({required this.authRepost}):super(AuthInitial());
   //get current user
   AppUser? get currentUser => _currentUser;
-  //CHECK IF USER IS AUTHENTICTED
-  void checkAuthStatus()async{
+
     void checkAuthStatus() async {
       emit(AuthLoading());
       //get current user
@@ -24,7 +24,7 @@ class AuthCubith extends Cubit <AuthState>{
         emit(UnAuthenticated());
       }
 
-    }
+
   }
 //to log in with email and password
   Future<void>login(String email,String password)async {
@@ -91,6 +91,34 @@ class AuthCubith extends Cubit <AuthState>{
     catch(e){
       emit(AuthError(e.toString()));
     }}
+  //LOGOUT
+  Future<void>logout()async{
+    try{
+      await authRepost.signOut();
+      _currentUser=null;
+      emit(UnAuthenticated());
+    }
+    catch(e){
+      emit(AuthError(e.toString()));
+    }
+  }
+//Google sign in
+  Future<AppUser?>signInWithGoogle()async{
+    try{
+      emit(AuthLoading());
+      final AppUser? user = await authRepost.signInWithGoogle();
+      if(user!=null){
+        _currentUser=user;
+        emit(AuthSuccess(user));
+      }
+      else{
+        emit(AuthError("Google Sign-In failed"));
+      }
+    }catch(e){
+      emit(AuthError(e.toString()));
+      emit(UnAuthenticated());
 
+    }
+  }
 
 }

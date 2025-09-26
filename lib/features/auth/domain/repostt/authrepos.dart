@@ -9,4 +9,5 @@ abstract class AuthRepost{
   Future<bool> isSignedIn();
   Future<String> sendPasswordResetEmail(String email);
     Future<void> deleteAccount();
+    Future<AppUser?> signInWithGoogle();
 }

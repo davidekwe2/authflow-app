@@ -8,9 +8,12 @@ class Mybuttons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("LOGIN",style:  TextStyle(fontSize: 20),),
-      padding: EdgeInsets.only(left: 50,right: 50,top: 15,bottom: 15),
+      child: Text(text,style:  TextStyle(
+          fontSize: 20,fontWeight: FontWeight.bold,letterSpacing: 2,color: Theme.of(context).colorScheme.secondary
+      ),),
+      padding: EdgeInsets.only(left: 156,right: 156,top: 20,bottom: 20),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Theme.of(context).colorScheme.primary),
+
     );
   }
 }

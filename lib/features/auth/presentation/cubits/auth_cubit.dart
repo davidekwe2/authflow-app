@@ -12,7 +12,7 @@ class AuthCubith extends Cubit <AuthState>{
   //get current user
   AppUser? get currentUser => _currentUser;
   //CHECK IF USER IS AUTHENTICTED
-  void checkAuthStatus()async{
+
     void checkAuthStatus() async {
       emit(AuthLoading());
       //get current user
@@ -24,7 +24,7 @@ class AuthCubith extends Cubit <AuthState>{
         emit(UnAuthenticated());
       }
 
-    }
+
   }
 //to log in with email and password
   Future<void>login(String email,String password)async {

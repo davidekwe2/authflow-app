@@ -2,7 +2,9 @@ import 'package:authflow/mycomponents/mybuttons.dart';
 import 'package:authflow/mycomponents/mytextfields.dart';
 import 'package:flutter/material.dart';
 class Loginpage extends StatefulWidget {
-  const Loginpage({super.key});
+  //to trigger the auth login page
+  final void Function()? togglePages;
+  const Loginpage({super.key,required this.togglePages});
 
   @override
   State<Loginpage> createState() => _LoginpageState();
@@ -11,6 +13,8 @@ class Loginpage extends StatefulWidget {
 class _LoginpageState extends State<Loginpage> {
   final emailController=TextEditingController();
   final passwordController=TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +33,7 @@ class _LoginpageState extends State<Loginpage> {
           Text(
             'THE MIGHTY AUTHENTICATOR',
             style: TextStyle(
-                fontSize:20,fontWeight: FontWeight.bold, letterSpacing: 2.5),),
+                fontSize:20,fontWeight: FontWeight.bold, letterSpacing: 2.5,color: Theme.of(context).colorScheme.primary),),
           SizedBox(height: 20,),
           Container(),
           //name of aoo
@@ -44,7 +48,7 @@ class _LoginpageState extends State<Loginpage> {
             height: 25.0,
           ),
           //password textfield
-          Mytextfields(controller: passwordController, hintetxt: "PASSWORD", obscureText: true,iconn: Icons.lock,),
+          Mytextfields(controller: passwordController, hintetxt: "Password", obscureText: true,iconn: Icons.lock,),
           //forgot password
           SizedBox(height: 8.0,),
           Align(
@@ -61,8 +65,21 @@ class _LoginpageState extends State<Loginpage> {
           SizedBox(
             height: 15,
           ),
-          Mybuttons(text: "LOGIN",ontap: (){},)
+          Mybuttons(text: "LOGIN",ontap: (){},),
+          SizedBox(
+            height: 15,
+          ),
           //signup
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Don't have an account?",style: TextStyle(color: Theme.of(context).colorScheme.primary,fontSize: 15)),
+              SizedBox(width: 5.0,),
+              GestureDetector(onTap: widget.togglePages,
+                  child: Text("Sign Up Here",style: TextStyle(color: Theme.of(context).colorScheme.primary,fontWeight: FontWeight.bold,fontSize: 16),
+              ))
+            ]
+          ),
         ],
       ),
     );
